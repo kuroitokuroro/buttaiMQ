@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>物体迷宮</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="game-shell">
+    <header class="game-header">
+      <h1>物体迷宮</h1>
+      <div id="floorDisplay" class="floor-display">B1F</div>
+    </header>
+
+    <section class="game-window" aria-label="迷宮画面">
+      <pre id="mapView" class="map-view"></pre>
+    </section>
+
+    <section class="log-window" aria-label="ログ">
+      <div id="logView" class="log-view"></div>
+    </section>
+
+    <section class="help-window" aria-label="操作説明">
+      <p>移動：WASD / 矢印キー</p>
+      <p>↓ に乗ると次の階へ進む。戦闘・箱・イベントはまだ試作中。</p>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

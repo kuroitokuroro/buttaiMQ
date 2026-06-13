@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #050505;
+  color: #f2f2f2;
+  font-family:
+    "MS Gothic",
+    "Yu Gothic",
+    "Noto Sans Mono CJK JP",
+    monospace;
+}
+
+.game-shell {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.game-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.floor-display {
+  font-size: 18px;
+}
+
+.game-window,
+.log-window,
+.help-window {
+  border: 1px solid #f2f2f2;
+  background: #050505;
+}
+
+.game-window {
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.map-view {
+  margin: 0;
+  line-height: 1.25;
+  font-size: 20px;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+}
+
+.log-window {
+  min-height: 112px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.log-view {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.help-window {
+  padding: 10px 14px;
+  color: #cfcfcf;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.help-window p {
+  margin: 2px 0;
+}
+
+@media (max-width: 640px) {
+  .game-shell {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .map-view {
+    font-size: 14px;
+  }
+}
