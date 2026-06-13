@@ -1,454 +1,254 @@
 // ==================================================
-// 物体迷宮 第一試作
+// 物体迷宮 第一試作・テキスト進行版
 // ==================================================
 
-// ---------- 定数 ----------
+// ---------- データ ----------
 
-const MAP_WIDTH = 32;
-const MAP_HEIGHT = 18;
+const FLOOR_THEMES = [
+  {
+    name: "冷蔵庫",
+    floorName: "冷蔵庫の階",
+    encounters: [
+      "冷蔵庫だ。\n扉が開いている。うすら寒い空気が伝わってくる。",
+    ],
+  },
+  {
+    name: "消しゴム",
+    floorName: "消しゴムの階",
+    encounters: [
+      "消しゴムだ。\n昔なくした使いかけの消しゴム。いびつな形をしている。",
+    ],
+  },
+  {
+    name: "色鉛筆",
+    floorName: "色鉛筆の階",
+    encounters: [
+      "色鉛筆だ。\nあなたの大好きな色だけ、妙に短くなっている。",
+    ],
+  },
+  {
+    name: "りんご",
+    floorName: "りんごの階",
+    encounters: [
+      "りんごだ。\nつややかで美味しそうだ。ごろんと重い。",
+    ],
+  },
+  {
+    name: "メモ帳",
+    floorName: "メモ帳の階",
+    encounters: [
+      "メモ帳だ。\n何を残そうとしたのか、ミミズのような字がのたくっている。",
+    ],
+  },
+  {
+    name: "ネクタイ",
+    floorName: "ネクタイの階",
+    encounters: [
+      "ネクタイだ。\nほどくのが面倒で結びっぱなしの、怠惰な結び目。",
+    ],
+  },
+  {
+    name: "漫画",
+    floorName: "漫画の階",
+    encounters: [
+      "漫画だ。\nお菓子を食べながら読んだ友達の指の油が染みている。",
+    ],
+  },
+  {
+    name: "スプーン",
+    floorName: "スプーンの階",
+    encounters: [
+      "スプーンだ。\nマジックの練習台になり、かわいそうに曲がっている。",
+    ],
+  },
+  {
+    name: "眼鏡",
+    floorName: "眼鏡の階",
+    encounters: [
+      "眼鏡だ。\n黒縁が目立つ。べっとりと指紋が付いている。",
+    ],
+  },
+  {
+    name: "イス",
+    floorName: "イスの階",
+    encounters: [
+      "イスだ。\n座ると軋む。体重移動のたびに不愉快な声で鳴く。",
+    ],
+  },
+  {
+    name: "電子レンジ",
+    floorName: "電子レンジの階",
+    encounters: [
+      "電子レンジだ。\nきのうの夕飯が中でぐるぐる回っている。",
+    ],
+  },
+  {
+    name: "ランドセル",
+    floorName: "ランドセルの階",
+    encounters: [
+      "ランドセルだ。\n色は一番人気のパープルだし、模様もしゃれている。",
+    ],
+  },
+];
 
-const MIN_ROOMS = 3;
-const MAX_ROOMS = 7;
+const MAX_PROGRESS = 10;
 
-const MIN_ROOM_WIDTH = 4;
-const MAX_ROOM_WIDTH = 8;
-const MIN_ROOM_HEIGHT = 3;
-const MAX_ROOM_HEIGHT = 6;
-
-const ROOM_PLACE_ATTEMPTS = 120;
-
-const TILE = {
-  WALL: "wall",
-  FLOOR: "floor",
-  PLAYER: "player",
-  ENEMY: "enemy",
-  BOX: "box",
-  EVENT: "event",
-  DOOR: "door",
-  STAIRS_UP: "stairsUp",
-  STAIRS_DOWN: "stairsDown",
-};
-
-const TILE_SYMBOL = {
-  [TILE.WALL]: "■",
-  [TILE.FLOOR]: "□",
-  [TILE.PLAYER]: "＠",
-  [TILE.ENEMY]: "敵",
-  [TILE.BOX]: "箱",
-  [TILE.EVENT]: "？",
-  [TILE.DOOR]: "＋",
-  [TILE.STAIRS_UP]: "↑",
-  [TILE.STAIRS_DOWN]: "↓",
-};
-
-const OBJECT_LOGS = {
-  [TILE.ENEMY]: [
-    "敵がこちらを向いた。",
-    "暗がりの中で、何かが身じろぎした。",
-    "それが何なのかは、まだ分からない。",
-  ],
-  [TILE.BOX]: [
-    "箱が置かれている。",
-    "宝か、罠か。開けてみるまで分からない。",
-  ],
-  [TILE.EVENT]: [
-    "床に違和感がある。",
-    "今はまだ、これ以上調べられない。",
-  ],
-  [TILE.STAIRS_UP]: [
-    "上り階段がある。",
-    "戻る処理はまだ実装されていない。",
-  ],
-};
+const SPECIAL_EVENTS = [
+  "箱がある。\n開ける機能は、まだない。",
+  "足元に違和感がある。\n何かが仕込まれている気がする。",
+  "遠くで物音がした。\nそれはすぐに止んだ。",
+];
 
 // ---------- DOM取得 ----------
 
-const mapView = document.getElementById("mapView");
-const logView = document.getElementById("logView");
 const floorDisplay = document.getElementById("floorDisplay");
+const progressGauge = document.getElementById("progressGauge");
+const themeDisplay = document.getElementById("themeDisplay");
+const textWindow = document.getElementById("textWindow");
+const forwardButton = document.getElementById("forwardButton");
+const backButton = document.getElementById("backButton");
+const menuButtons = document.querySelectorAll("[data-menu]");
 
 // ---------- 状態 ----------
 
 let floorNumber = 1;
-let map = [];
-let rooms = [];
-
-const player = {
-  x: 0,
-  y: 0,
-};
-
-let logs = [];
+let progress = 0;
+let currentText = "物体迷宮に入った。";
+let history = [];
 
 // ---------- 初期化 ----------
 
-startGame();
+forwardButton.addEventListener("click", goForward);
+backButton.addEventListener("click", goBack);
+
+menuButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    showText(`${button.dataset.menu}は、まだ使えない。`);
+  });
+});
 
 document.addEventListener("keydown", handleKeyDown);
 
-// ---------- ゲーム進行 ----------
-
-function startGame() {
-  generateFloor();
-  addLog("地下1階に降り立った。");
-  addLog("矢印キーまたはWASDで移動できる。");
-  render();
-}
-
-function generateFloor() {
-  map = createFilledMap(TILE.WALL);
-  rooms = [];
-
-  createRooms();
-  connectRooms();
-  placePlayer();
-  placeStairs();
-  placeObjects();
-}
-
-function goNextFloor() {
-  floorNumber += 1;
-  generateFloor();
-
-  addLog(`地下${floorNumber}階へ降りた。`);
-  addLog("空気が少し変わった。");
-
-  render();
-}
-
-// ---------- マップ生成 ----------
-
-function createFilledMap(tileType) {
-  const newMap = [];
-
-  for (let y = 0; y < MAP_HEIGHT; y++) {
-    const row = [];
-
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      row.push(tileType);
-    }
-
-    newMap.push(row);
-  }
-
-  return newMap;
-}
-
-function createRooms() {
-  const targetRoomCount = randomInt(MIN_ROOMS, MAX_ROOMS);
-  let attempts = 0;
-
-  while (
-    rooms.length < targetRoomCount &&
-    attempts < ROOM_PLACE_ATTEMPTS
-  ) {
-    attempts += 1;
-
-    const width = randomInt(MIN_ROOM_WIDTH, MAX_ROOM_WIDTH);
-    const height = randomInt(MIN_ROOM_HEIGHT, MAX_ROOM_HEIGHT);
-
-    const x = randomInt(1, MAP_WIDTH - width - 2);
-    const y = randomInt(1, MAP_HEIGHT - height - 2);
-
-    const room = {
-      x,
-      y,
-      width,
-      height,
-      centerX: Math.floor(x + width / 2),
-      centerY: Math.floor(y + height / 2),
-    };
-
-    if (doesRoomOverlap(room)) continue;
-
-    rooms.push(room);
-    carveRoom(room);
-  }
-
-  if (rooms.length < 2) {
-    map = createFilledMap(TILE.WALL);
-    rooms = [];
-
-    const fallbackRoom = {
-      x: 4,
-      y: 4,
-      width: 10,
-      height: 6,
-      centerX: 9,
-      centerY: 7,
-    };
-
-    const secondRoom = {
-      x: 18,
-      y: 9,
-      width: 8,
-      height: 5,
-      centerX: 22,
-      centerY: 11,
-    };
-
-    rooms.push(fallbackRoom, secondRoom);
-    carveRoom(fallbackRoom);
-    carveRoom(secondRoom);
-  }
-}
-
-function doesRoomOverlap(newRoom) {
-  return rooms.some((room) => {
-    const hasGap =
-      newRoom.x + newRoom.width + 1 < room.x ||
-      room.x + room.width + 1 < newRoom.x ||
-      newRoom.y + newRoom.height + 1 < room.y ||
-      room.y + room.height + 1 < newRoom.y;
-
-    return !hasGap;
-  });
-}
-
-function carveRoom(room) {
-  for (let y = room.y; y < room.y + room.height; y++) {
-    for (let x = room.x; x < room.x + room.width; x++) {
-      map[y][x] = TILE.FLOOR;
-    }
-  }
-}
-
-function connectRooms() {
-  for (let i = 1; i < rooms.length; i++) {
-    const previousRoom = rooms[i - 1];
-    const currentRoom = rooms[i];
-
-    carveCorridor(
-      previousRoom.centerX,
-      previousRoom.centerY,
-      currentRoom.centerX,
-      currentRoom.centerY,
-    );
-  }
-}
-
-function carveCorridor(startX, startY, endX, endY) {
-  let x = startX;
-  let y = startY;
-
-  while (x !== endX) {
-    map[y][x] = TILE.FLOOR;
-    x += x < endX ? 1 : -1;
-  }
-
-  while (y !== endY) {
-    map[y][x] = TILE.FLOOR;
-    y += y < endY ? 1 : -1;
-  }
-
-  map[y][x] = TILE.FLOOR;
-
-  placeDoorNearRoom(startX, startY, endX, endY);
-}
-
-function placeDoorNearRoom(startX, startY, endX, endY) {
-  const doorCandidates = [
-    { x: startX, y: startY },
-    { x: endX, y: endY },
-  ];
-
-  doorCandidates.forEach((candidate) => {
-    if (map[candidate.y]?.[candidate.x] === TILE.FLOOR) {
-      if (Math.random() < 0.35) {
-        map[candidate.y][candidate.x] = TILE.DOOR;
-      }
-    }
-  });
-}
-
-// ---------- 配置 ----------
-
-function placePlayer() {
-  const firstRoom = rooms[0];
-
-  player.x = firstRoom.centerX;
-  player.y = firstRoom.centerY;
-}
-
-function placeStairs() {
-  const firstRoom = rooms[0];
-  const lastRoom = rooms[rooms.length - 1];
-
-  map[firstRoom.centerY][firstRoom.centerX] = TILE.STAIRS_UP;
-  map[lastRoom.centerY][lastRoom.centerX] = TILE.STAIRS_DOWN;
-}
-
-function placeObjects() {
-  placeRandomObjects(TILE.ENEMY, randomInt(2, 5));
-  placeRandomObjects(TILE.BOX, randomInt(1, 3));
-  placeRandomObjects(TILE.EVENT, randomInt(1, 3));
-}
-
-function placeRandomObjects(tileType, count) {
-  let placed = 0;
-  let attempts = 0;
-
-  while (placed < count && attempts < 200) {
-    attempts += 1;
-
-    const position = getRandomFloorPosition();
-
-    if (!position) return;
-    if (position.x === player.x && position.y === player.y) continue;
-
-    map[position.y][position.x] = tileType;
-    placed += 1;
-  }
-}
-
-function getRandomFloorPosition() {
-  const candidates = [];
-
-  for (let y = 1; y < MAP_HEIGHT - 1; y++) {
-    for (let x = 1; x < MAP_WIDTH - 1; x++) {
-      if (map[y][x] === TILE.FLOOR) {
-        candidates.push({ x, y });
-      }
-    }
-  }
-
-  if (candidates.length === 0) return null;
-
-  return candidates[randomInt(0, candidates.length - 1)];
-}
+render();
 
 // ---------- 入力 ----------
 
 function handleKeyDown(event) {
   const key = event.key.toLowerCase();
 
-  const direction = getDirectionFromKey(key);
-
-  if (!direction) return;
-
-  event.preventDefault();
-
-  movePlayer(direction.dx, direction.dy);
-}
-
-function getDirectionFromKey(key) {
-  const directions = {
-    arrowup: { dx: 0, dy: -1 },
-    w: { dx: 0, dy: -1 },
-
-    arrowdown: { dx: 0, dy: 1 },
-    s: { dx: 0, dy: 1 },
-
-    arrowleft: { dx: -1, dy: 0 },
-    a: { dx: -1, dy: 0 },
-
-    arrowright: { dx: 1, dy: 0 },
-    d: { dx: 1, dy: 0 },
-  };
-
-  return directions[key] || null;
-}
-
-// ---------- 移動 ----------
-
-function movePlayer(dx, dy) {
-  const nextX = player.x + dx;
-  const nextY = player.y + dy;
-
-  if (!isInsideMap(nextX, nextY)) return;
-
-  const nextTile = map[nextY][nextX];
-
-  if (nextTile === TILE.WALL) {
-    addLog("壁がある。");
-    render();
+  if (key === "arrowright" || key === "d" || key === "enter") {
+    event.preventDefault();
+    goForward();
     return;
   }
 
-  player.x = nextX;
-  player.y = nextY;
-
-  handleTileStep(nextTile);
-  render();
+  if (key === "arrowleft" || key === "a" || key === "backspace") {
+    event.preventDefault();
+    goBack();
+  }
 }
 
-function handleTileStep(tileType) {
-  if (tileType === TILE.STAIRS_DOWN) {
+// ---------- 進行 ----------
+
+function goForward() {
+  history.push({
+    floorNumber,
+    progress,
+    currentText,
+  });
+
+  progress += 1;
+
+  if (progress > MAX_PROGRESS) {
     goNextFloor();
     return;
   }
 
-  if (tileType === TILE.DOOR) {
-    addLog("扉をくぐった。");
+  const text = createForwardText();
+  showText(text);
+}
+
+function goBack() {
+  if (history.length === 0) {
+    showText("これ以上は戻れない。");
     return;
   }
 
-  const tileLogs = OBJECT_LOGS[tileType];
+  const previousState = history.pop();
 
-  if (!tileLogs) return;
+  floorNumber = previousState.floorNumber;
+  progress = previousState.progress;
+  currentText = previousState.currentText;
 
-  tileLogs.forEach((message) => addLog(message));
+  render();
 }
 
-function isInsideMap(x, y) {
-  return (
-    x >= 0 &&
-    x < MAP_WIDTH &&
-    y >= 0 &&
-    y < MAP_HEIGHT
+function goNextFloor() {
+  floorNumber += 1;
+  progress = 0;
+  history = [];
+
+  const theme = getCurrentTheme();
+
+  showText(
+    `階段を降りた。\n\nここはＦ${floorNumber}。\n${theme.floorName}だ。`
   );
 }
 
-// ---------- 描画 ----------
+function createForwardText() {
+  const eventRoll = Math.random();
+
+  if (eventRoll < 0.18) {
+    return pickRandom(SPECIAL_EVENTS);
+  }
+
+  const theme = getCurrentTheme();
+
+  return pickRandom(theme.encounters);
+}
+
+// ---------- 表示 ----------
+
+function showText(text) {
+  currentText = text;
+  render();
+}
 
 function render() {
-  floorDisplay.textContent = `B${floorNumber}F`;
-  renderMap();
-  renderLogs();
+  const theme = getCurrentTheme();
+
+  floorDisplay.textContent = `Ｆ${floorNumber}`;
+  progressGauge.textContent = createProgressGauge();
+  themeDisplay.textContent = theme.floorName;
+
+  textWindow.innerHTML = "";
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = currentText;
+
+  textWindow.appendChild(paragraph);
 }
 
-function renderMap() {
-  const lines = [];
+function createProgressGauge() {
+  let gauge = "";
 
-  for (let y = 0; y < MAP_HEIGHT; y++) {
-    let line = "";
-
-    for (let x = 0; x < MAP_WIDTH; x++) {
-      if (x === player.x && y === player.y) {
-        line += TILE_SYMBOL[TILE.PLAYER];
-      } else {
-        line += TILE_SYMBOL[map[y][x]];
-      }
-    }
-
-    lines.push(line);
+  for (let i = 0; i < MAX_PROGRESS; i++) {
+    gauge += i < progress ? "■" : "□";
   }
 
-  mapView.textContent = lines.join("\n");
-}
-
-function renderLogs() {
-  logView.innerHTML = "";
-
-  logs.slice(-5).forEach((message) => {
-    const line = document.createElement("div");
-    line.textContent = `> ${message}`;
-    logView.appendChild(line);
-  });
-}
-
-// ---------- ログ ----------
-
-function addLog(message) {
-  logs.push(message);
-
-  if (logs.length > 40) {
-    logs = logs.slice(-40);
-  }
+  return gauge;
 }
 
 // ---------- 汎用 ----------
 
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function getCurrentTheme() {
+  const index = (floorNumber - 1) % FLOOR_THEMES.length;
+
+  return FLOOR_THEMES[index];
+}
+
+function pickRandom(items) {
+  const index = Math.floor(Math.random() * items.length);
+
+  return items[index];
 }

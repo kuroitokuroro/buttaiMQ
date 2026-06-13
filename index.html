@@ -12,22 +12,32 @@
 
 <body>
   <main class="game-shell">
-    <header class="game-header">
-      <h1>物体迷宮</h1>
-      <div id="floorDisplay" class="floor-display">B1F</div>
-    </header>
+    <section class="game-frame" aria-label="物体迷宮">
+      <div class="top-row">
+        <div id="floorDisplay" class="floor-display">Ｆ１</div>
+        <div id="progressGauge" class="progress-gauge">□□□□□□□□□□</div>
+      </div>
 
-    <section class="game-window" aria-label="迷宮画面">
-      <pre id="mapView" class="map-view"></pre>
-    </section>
+      <div class="theme-row">
+        <span id="themeDisplay">冷蔵庫の階</span>
+      </div>
 
-    <section class="log-window" aria-label="ログ">
-      <div id="logView" class="log-view"></div>
-    </section>
+      <section id="textWindow" class="text-window" aria-live="polite">
+        <p>物体迷宮に入った。</p>
+      </section>
 
-    <section class="help-window" aria-label="操作説明">
-      <p>移動：WASD / 矢印キー</p>
-      <p>↓ に乗ると次の階へ進む。戦闘・箱・イベントはまだ試作中。</p>
+      <section class="main-actions" aria-label="主要操作">
+        <button id="forwardButton" type="button">進む</button>
+        <button id="backButton" type="button">戻る</button>
+      </section>
+
+      <section class="menu-actions" aria-label="メニュー">
+        <button type="button" data-menu="能力">能力</button>
+        <button type="button" data-menu="アイテム">アイテム</button>
+        <button type="button" data-menu="装備">装備</button>
+        <button type="button" data-menu="スキル">スキル</button>
+        <button type="button" data-menu="設定">設定</button>
+      </section>
     </section>
   </main>
 
