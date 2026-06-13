@@ -91,7 +91,8 @@ const FLOOR_THEMES = [
   },
 ];
 
-const MAX_PROGRESS = 10;
+const PROGRESS_STEP = 5;
+const MAX_PROGRESS = 100;
 
 const SPECIAL_EVENTS = [
   "箱がある。\n開ける機能は、まだない。",
@@ -157,11 +158,15 @@ function goForward() {
     currentText,
   });
 
-  progress += 1;
-
-  if (progress > MAX_PROGRESS) {
+  if (progress >= MAX_PROGRESS) {
     goNextFloor();
     return;
+  }
+
+  progress += PROGRESS_STEP;
+
+  if (progress > MAX_PROGRESS) {
+    progress = MAX_PROGRESS;
   }
 
   const text = createForwardText();
@@ -218,8 +223,9 @@ function render() {
   const theme = getCurrentTheme();
 
   floorDisplay.textContent = `Ｆ${floorNumber}`;
-  progressGauge.textContent = createProgressGauge();
   themeDisplay.textContent = theme.floorName;
+
+  renderProgressGauge();
 
   textWindow.innerHTML = "";
 
@@ -229,14 +235,18 @@ function render() {
   textWindow.appendChild(paragraph);
 }
 
+function renderProgressGauge() {
+  progressGauge.innerHTML = "";
+
+  const fill = document.createElement("div");
+  fill.className = "progress-gauge-fill";
+  fill.style.width = `${progress}%`;
+
+  progressGauge.appendChild(fill);
+}
+
 function createProgressGauge() {
-  let gauge = "";
-
-  for (let i = 0; i < MAX_PROGRESS; i++) {
-    gauge += i < progress ? "■" : "□";
-  }
-
-  return gauge;
+  return "";
 }
 
 // ---------- 汎用 ----------
