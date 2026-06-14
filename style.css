@@ -19,22 +19,24 @@ button {
 }
 
 .game-shell {
-  width: min(480px, 100%);
+  width: 100%;
   min-height: 100vh;
-  margin: 0 auto;
   padding: 16px;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .game-frame {
-  width: 100%;
-  min-height: 620px;
+  width: min(480px, calc(90vh * 9 / 16), 100%);
+  aspect-ratio: 9 / 16;
   padding: 16px 14px;
   border-top: 2px solid #f2f2f2;
   border-bottom: 2px solid #f2f2f2;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .top-row {
@@ -127,7 +129,7 @@ button {
   border: 1px solid #888;
   background: #050505;
   color: #f2f2f2;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 button:active {
@@ -140,13 +142,86 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
+.effect-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.attack-effect {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 1px;
+  height: 1px;
+}
+
+.attack-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 1px;
+  background: #f2f2f2;
+  transform-origin: 0 50%;
+  opacity: 0;
+  animation: attackLineBurst 0.34s ease-out forwards;
+}
+
+@keyframes attackLineBurst {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateX(34px) scaleX(0);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateX(36px) scaleX(1);
+  }
+}
+
+.magic-effect {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 144px;
+  height: 144px;
+  margin-left: -72px;
+  margin-top: -72px;
+  border: 1px solid #f2f2f2;
+  border-radius: 50%;
+  opacity: 0;
+  animation: magicCircleSpread 0.36s ease-out forwards;
+}
+
+@keyframes magicCircleSpread {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
 @media (max-width: 380px) {
   .game-shell {
     padding: 10px;
   }
 
   .game-frame {
-    min-height: 560px;
     padding: 12px 10px;
   }
 
@@ -155,20 +230,23 @@ button:focus-visible {
   }
 
   .move-actions {
-  gap: 18px;
+    gap: 18px;
+  }
+
+  .move-actions button {
+    min-width: 96px;
+  }
+
+ .battle-actions {
+  display: none;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 18px;
 }
 
-.move-actions button {
-  min-width: 96px;
-}
-
-.battle-actions {
-  gap: 6px;
-}
-
-.battle-actions button {
-  min-width: 76px;
-}
+  .battle-actions button {
+    min-width: 76px;
+  }
 
   .menu-actions button {
     font-size: 12px;
