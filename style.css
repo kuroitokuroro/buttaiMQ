@@ -91,11 +91,11 @@ button {
   display: flex;
   justify-content: center;
   gap: 28px;
-  margin: 6px 0 14px;
+  margin: 6px 0 65px;
 }
 
 .battle-actions {
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 10px;
   margin: 0 0 18px;
@@ -236,13 +236,6 @@ button:focus-visible {
   .move-actions button {
     min-width: 96px;
   }
-
- .battle-actions {
-  display: none;
-  justify-content: center;
-  gap: 10px;
-  margin: 0 0 18px;
-}
 
   .battle-actions button {
     min-width: 76px;
