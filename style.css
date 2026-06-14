@@ -85,19 +85,34 @@ button {
   margin: 0 0 14px;
 }
 
-.main-actions {
+.move-actions {
   display: flex;
   justify-content: center;
   gap: 28px;
-  margin: 20px 0 18px;
+  margin: 6px 0 14px;
 }
 
-.main-actions button {
-  min-width: 112px;
+.battle-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.move-actions button,
+.battle-actions button {
   min-height: 44px;
   border: 1px solid #f2f2f2;
   background: #050505;
   color: #f2f2f2;
+}
+
+.move-actions button {
+  min-width: 112px;
+}
+
+.battle-actions button {
+  min-width: 88px;
 }
 
 .menu-actions {
@@ -139,13 +154,21 @@ button:focus-visible {
     font-size: 16px;
   }
 
-  .main-actions {
-    gap: 18px;
-  }
+  .move-actions {
+  gap: 18px;
+}
 
-  .main-actions button {
-    min-width: 96px;
-  }
+.move-actions button {
+  min-width: 96px;
+}
+
+.battle-actions {
+  gap: 6px;
+}
+
+.battle-actions button {
+  min-width: 76px;
+}
 
   .menu-actions button {
     font-size: 12px;

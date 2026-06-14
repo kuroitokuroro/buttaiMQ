@@ -108,7 +108,11 @@ const themeDisplay = document.getElementById("themeDisplay");
 const textWindow = document.getElementById("textWindow");
 const forwardButton = document.getElementById("forwardButton");
 const backButton = document.getElementById("backButton");
+const attackButton = document.getElementById("attackButton");
+const magicButton = document.getElementById("magicButton");
+const escapeButton = document.getElementById("escapeButton");
 const menuButtons = document.querySelectorAll("[data-menu]");
+
 
 // ---------- 状態 ----------
 
@@ -121,6 +125,15 @@ let history = [];
 
 forwardButton.addEventListener("click", goForward);
 backButton.addEventListener("click", goBack);
+attackButton.addEventListener("click", () => {
+  showText("こうげきした。");
+});
+magicButton.addEventListener("click", () => {
+  showText("魔法を使った。");
+});
+escapeButton.addEventListener("click", () => {
+  showText("逃げ出した。");
+});
 
 menuButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -222,7 +235,7 @@ function showText(text) {
 function render() {
   const theme = getCurrentTheme();
 
-  floorDisplay.textContent = `Ｆ${floorNumber}`;
+  floorDisplay.textContent = `Ｆ${toFullWidthNumber(floorNumber)}`;
   themeDisplay.textContent = theme.floorName;
 
   renderProgressGauge();
@@ -261,4 +274,10 @@ function pickRandom(items) {
   const index = Math.floor(Math.random() * items.length);
 
   return items[index];
+}
+
+function toFullWidthNumber(number) {
+  return String(number).replace(/[0-9]/g, (digit) => {
+    return String.fromCharCode(digit.charCodeAt(0) + 0xFEE0);
+  });
 }
