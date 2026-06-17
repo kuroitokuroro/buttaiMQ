@@ -25,8 +25,51 @@
         <span id="themeDisplay">冷蔵庫の階</span>
       </div>
 
+      <section class="status-area" aria-label="ステータス">
+        <div class="status-row">
+          <div class="status-gauge hp-gauge">
+            <span id="enemyHpText" class="status-label">敵HP 0/0</span>
+            <div class="status-track">
+              <div id="enemyHpFill" class="status-fill"></div>
+            </div>
+          </div>
+
+          <div class="status-gauge mp-gauge">
+            <span id="enemyMpText" class="status-label">敵MP 0/0</span>
+            <div class="status-track">
+              <div id="enemyMpFill" class="status-fill"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="textWindow" class="text-window" aria-live="polite">
         <p>物体迷宮に入った。</p>
+      </section>
+
+      <section class="status-area player-status-area" aria-label="プレイヤーステータス">
+        <div class="status-row">
+          <div class="status-gauge hp-gauge">
+            <span id="playerHpText" class="status-label">HP 10/10</span>
+            <div class="status-track">
+              <div id="playerHpFill" class="status-fill"></div>
+            </div>
+          </div>
+
+          <div class="status-gauge mp-gauge">
+            <span id="playerMpText" class="status-label">MP 1/1</span>
+            <div class="status-track">
+              <div id="playerMpFill" class="status-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-gauge exp-gauge">
+          <span id="playerExpText" class="status-label">EXP 0/5</span>
+          <div class="status-track">
+            <div id="playerExpFill" class="status-fill"></div>
+          </div>
+        </div>
       </section>
 
       <section class="move-actions" aria-label="移動操作">

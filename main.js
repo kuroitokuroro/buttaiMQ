@@ -11,6 +11,7 @@ const FLOOR_THEMES = [
     encounters: [
       "冷蔵庫だ。\n扉が開いている。うすら寒い空気が伝わってくる。",
       "冷蔵庫だ。\nきのうの夕飯と、おやつのプリンが隣同士で並んでいる。",
+      "冷蔵庫だ。\nヤニ色に変色した扉のあちこちにシールが貼ってある。",
     ],
   },
   {
@@ -19,6 +20,7 @@ const FLOOR_THEMES = [
     encounters: [
       "消しゴムだ。\n昔なくした使いかけの消しゴム。いびつな形をしている。",
       "消しゴムだ。\nすべての角が使用済みで、包んでいる紙も薄汚い。",
+      "消しゴムだ。\nたのしい香りがする。ずっと嗅いでると頭が痛くなってくる。",
     ],
   },
   {
@@ -26,7 +28,8 @@ const FLOOR_THEMES = [
     floorName: "色鉛筆の階",
     encounters: [
       "色鉛筆だ。\nあなたの大好きな色だけ、妙に短くなっている。",
-      "色鉛筆だ。\n白色だけ失くしたけど、白だから誰も困らない。",
+      "色鉛筆だ。\n白色だけ失くしたが、白だから誰も困らない。",
+      "色鉛筆だ。\n持ち運ぶときに折れてしまった芯が箱の中に散乱している。",
     ],
   },
   {
@@ -35,6 +38,7 @@ const FLOOR_THEMES = [
     encounters: [
       "りんごだ。\nつややかで美味しそう。ごろんと重い。",
       "りんごだ。\n蜜がたっぷりの品種だよ、と言われた気がする",
+      "りんごだ。\nさっき齧ったところが、もう茶色くなっている",
     ],
   },
   {
@@ -43,6 +47,7 @@ const FLOOR_THEMES = [
     encounters: [
       "メモ帳だ。\n何を書こうとしたのか、ミミズのような字がのたくっている。",
       "メモ帳だ。\n端っこが折れてて、じんわりと嫌な気分になる。",
+      "メモ帳だ。\n筆圧が強すぎて痕になっている。",
     ],
   },
   {
@@ -51,6 +56,7 @@ const FLOOR_THEMES = [
     encounters: [
       "ネクタイだ。\nほどくのが面倒で結びっぱなしの、怠惰な結び目。",
       "ネクタイだ。\n一足先に卒業した、先輩からもらったおさがり。",
+      "ネクタイだ。\n趣味じゃないが、プレゼントなので文句が言えない。",
     ],
   },
   {
@@ -59,6 +65,7 @@ const FLOOR_THEMES = [
     encounters: [
       "漫画だ。\nお菓子を食べながら読んだ友達の指の油が染みている。",
       "漫画だ。\n意味不明のギャグマンガだが、読むとたまにしんみりする。",
+      "漫画だ。\n大好きなコマを全部切り抜いたから、もうとても読めるものじゃない。",
     ],
   },
   {
@@ -67,6 +74,7 @@ const FLOOR_THEMES = [
     encounters: [
       "スプーンだ。\nマジックの練習台にされ、かわいそうに曲がっている。",
       "スプーンだ。\nひどく醜い形に伸びた自分の顔が映り込んでいて不快だ。",
+      "スプーンだ。\nコーヒーの粉が溶け切らずに残っている。",
     ],
   },
   {
@@ -74,7 +82,8 @@ const FLOOR_THEMES = [
     floorName: "眼鏡の階",
     encounters: [
       "眼鏡だ。\n黒縁が目立つ。べっとりと指紋が付いている。",
-      "眼鏡だ。\nもう度数が合わないけど、今は廃盤のフレームがお気に入り。",
+      "眼鏡だ。\nもう度数は合わないけど、今は廃盤のフレームがお気に入り。",
+      "眼鏡だ。\nこれを買った店はもう何年も前に閉店してしまった。",
     ],
   },
   {
@@ -83,6 +92,7 @@ const FLOOR_THEMES = [
     encounters: [
       "イスだ。\n座ると軋む。体重移動のたびに不愉快な声で鳴く。",
       "イスだ。\n木製で、ささくれがひどい。早く捨てたらいいのに。",
+      "イスだ。\n中の綿がへたってきたので明日捨てる座椅子。",
     ],
   },
   {
@@ -91,6 +101,7 @@ const FLOOR_THEMES = [
     encounters: [
       "電子レンジだ。\n中できのうの夕飯がぐるぐる回っている。",
       "電子レンジだ。\nずっと使っているのに何ワットなのか知らない。",
+      "電子レンジだ。\n爆発した卵の黄身がこびりついて取れない。",
     ],
   },
   {
@@ -99,6 +110,7 @@ const FLOOR_THEMES = [
     encounters: [
       "ランドセルだ。\n色は一番人気のパープルだし、模様もしゃれている。",
       "ランドセルだ。\n黄色いカバーで包まれている。雨のにおいがする。",
+      "ランドセルだ。\nぶら下がっている袋の中に、まだ洗ってない給食着がある。",
     ],
   },
 ];
@@ -114,22 +126,37 @@ const SPECIAL_EVENTS = [
   "床に小さな傷がある。\n誰かがここで争ったようだ。",
   "空気が重い、気がする。\nだが、進むしかない。",
 ];
+
+
 // ---------- DOM取得 ----------
 
 const floorDisplay = document.getElementById("floorDisplay");
 const progressGauge = document.getElementById("progressGauge");
 const themeDisplay = document.getElementById("themeDisplay");
+
+const enemyHpFill = document.getElementById("enemyHpFill");
+const enemyMpFill = document.getElementById("enemyMpFill");
+const playerHpFill = document.getElementById("playerHpFill");
+const playerMpFill = document.getElementById("playerMpFill");
+const playerExpFill = document.getElementById("playerExpFill");
+
+const enemyHpText = document.getElementById("enemyHpText");
+const enemyMpText = document.getElementById("enemyMpText");
+const playerHpText = document.getElementById("playerHpText");
+const playerMpText = document.getElementById("playerMpText");
+const playerExpText = document.getElementById("playerExpText");
+
 const textWindow = document.getElementById("textWindow");
 const effectLayer = document.getElementById("effectLayer");
 const moveActions = document.querySelector(".move-actions");
 const battleActions = document.querySelector(".battle-actions");
+
 const forwardButton = document.getElementById("forwardButton");
 const backButton = document.getElementById("backButton");
 const attackButton = document.getElementById("attackButton");
 const magicButton = document.getElementById("magicButton");
 const escapeButton = document.getElementById("escapeButton");
 const menuButtons = document.querySelectorAll("[data-menu]");
-
 
 
 // ---------- 状態 ----------
@@ -140,24 +167,108 @@ let currentText = "物体迷宮に入った。";
 let history = [];
 let isBattle = false;
 
+let playerStatus = {
+  hp: 10,
+  maxHp: 10,
+  mp: 1,
+  maxMp: 1,
+  exp: 0,
+  maxExp: 5,
+  atk: 1,
+  def: 1,
+  int: 1,
+  mr: 1,
+  statusPoint: 0,
+};
+
+let enemyStatus = null;
+
 // ---------- 初期化 ----------
 
 forwardButton.addEventListener("click", goForward);
 backButton.addEventListener("click", goBack);
 attackButton.addEventListener("click", () => {
+  if (!enemyStatus) {
+    showText("攻撃する相手がいない。");
+    return;
+  }
+
   showAttackEffect();
-  isBattle = false;
-  showText("こうげきした。\n敵は動かなくなった。");
+
+  const damage = calculatePhysicalDamage(playerStatus, enemyStatus);
+
+  enemyStatus.hp -= damage;
+
+  if (enemyStatus.hp <= 0) {
+    enemyStatus.hp = 0;
+
+    const expReward = enemyStatus.expReward;
+    const gainedPoint = gainExp(expReward);
+
+    isBattle = false;
+    enemyStatus = null;
+
+    showText(
+      `こうげきした。\n` +
+      `${damage}のダメージ。\n` +
+      `敵は動かなくなった。\n\n` +
+      `EXPを${expReward}手に入れた。` +
+      createStatusPointText(gainedPoint)
+    );
+    return;
+  }
+
+  const enemyAttackText = createEnemyAttackText();
+
+  showText(`こうげきした。\n${damage}のダメージ。${enemyAttackText}`);
 });
 
 magicButton.addEventListener("click", () => {
+  if (!enemyStatus) {
+    showText("魔法を使う相手がいない。");
+    return;
+  }
+
+  if (playerStatus.mp < 1) {
+    showText("MPが足りない。");
+    return;
+  }
+
   showMagicEffect();
-  isBattle = false;
-  showText("魔法を使った。\n白い輪がほどけ、敵は沈黙した。");
+
+  playerStatus.mp -= 1;
+
+  const damage = calculateMagicDamage(playerStatus, enemyStatus);
+
+  enemyStatus.hp -= damage;
+
+  if (enemyStatus.hp <= 0) {
+    enemyStatus.hp = 0;
+
+    const expReward = enemyStatus.expReward;
+    const gainedPoint = gainExp(expReward);
+
+    isBattle = false;
+    enemyStatus = null;
+
+    showText(
+      `魔法を使った。\n` +
+      `${damage}のダメージ。\n` +
+      `敵は沈黙した。\n\n` +
+      `EXPを${expReward}手に入れた。` +
+      createStatusPointText(gainedPoint)
+    );
+    return;
+  }
+
+  const enemyAttackText = createEnemyAttackText();
+
+  showText(`魔法を使った。\n${damage}のダメージ。${enemyAttackText}`);
 });
 
 escapeButton.addEventListener("click", () => {
   isBattle = false;
+  enemyStatus = null;
   showText("逃げ出した。\n背後で何かが軋んだ。");
 });
 
@@ -246,7 +357,7 @@ function createForwardText() {
   const eventRoll = Math.random();
 
   if (eventRoll < 0.25) {
-    isBattle = true;
+    startBattle();
     return pickRandom(theme.encounters);
   }
 
@@ -256,8 +367,78 @@ function createForwardText() {
     return pickRandom(SPECIAL_EVENTS);
   }
 
-  return "先に進んだ。";
+  return "移動した。";
 }
+
+function startBattle() {
+  enemyStatus = {
+    hp: 3,
+    maxHp: 3,
+    mp: 0,
+    maxMp: 0,
+    atk: 1,
+    def: 0,
+    int: 0,
+    mr: 0,
+    expReward: 1,
+    materialReward: 1,
+  };
+
+  isBattle = true;
+}
+
+function calculatePhysicalDamage(attacker, defender) {
+  const baseDamage = attacker.atk - Math.floor(defender.def / 2);
+  const randomDamage = Math.floor(Math.random() * 3) - 1; // -1, 0, +1
+
+  return Math.max(1, baseDamage + randomDamage);
+}
+
+function calculateMagicDamage(attacker, defender) {
+  const baseDamage = attacker.int + 2 - Math.floor(defender.mr / 2);
+  const randomDamage = Math.floor(Math.random() * 3) - 1; // -1, 0, +1
+
+  return Math.max(1, baseDamage + randomDamage);
+}
+
+function createEnemyAttackText() {
+  if (!enemyStatus) return "";
+
+  const damage = calculatePhysicalDamage(enemyStatus, playerStatus);
+
+  playerStatus.hp -= damage;
+
+  if (playerStatus.hp <= 0) {
+    playerStatus.hp = 0;
+    isBattle = false;
+    enemyStatus = null;
+
+    return `\n\n敵の反撃。\n${damage}のダメージ。\n倒れた。`;
+  }
+
+  return `\n\n敵の反撃。\n${damage}のダメージ。`;
+}
+
+function gainExp(amount) {
+  playerStatus.exp += amount;
+
+  let gainedPoint = 0;
+
+  while (playerStatus.exp >= playerStatus.maxExp) {
+    playerStatus.exp -= playerStatus.maxExp;
+    playerStatus.statusPoint += 1;
+    gainedPoint += 1;
+  }
+
+  return gainedPoint;
+}
+
+function createStatusPointText(gainedPoint) {
+  if (gainedPoint <= 0) return "";
+
+  return `\nステータスポイントを${gainedPoint}手に入れた。`;
+}
+
 
 // ---------- 表示 ----------
 
@@ -309,6 +490,7 @@ function render() {
   battleActions.style.display = isBattle ? "flex" : "none";
 
   renderProgressGauge();
+  renderStatusGauges();
 
   textWindow.innerHTML = "";
 
@@ -326,6 +508,35 @@ function renderProgressGauge() {
   fill.style.width = `${progress}%`;
 
   progressGauge.appendChild(fill);
+}
+
+function renderStatusGauges() {
+  if (enemyStatus) {
+    setGauge(enemyHpFill, enemyHpText, "敵HP", enemyStatus.hp, enemyStatus.maxHp);
+    setGauge(enemyMpFill, enemyMpText, "敵MP", enemyStatus.mp, enemyStatus.maxMp);
+  } else {
+    setGauge(enemyHpFill, enemyHpText, "敵HP", 0, 0);
+    setGauge(enemyMpFill, enemyMpText, "敵MP", 0, 0);
+  }
+
+  setGauge(playerHpFill, playerHpText, "HP", playerStatus.hp, playerStatus.maxHp);
+  setGauge(playerMpFill, playerMpText, "MP", playerStatus.mp, playerStatus.maxMp);
+  setGauge(playerExpFill, playerExpText, "EXP", playerStatus.exp, playerStatus.maxExp);
+}
+
+function setGauge(fillElement, textElement, label, currentValue, maxValue) {
+  if (!fillElement || !textElement) return;
+
+  textElement.textContent = `${label} ${currentValue}/${maxValue}`;
+
+  if (maxValue <= 0) {
+    fillElement.style.width = "0%";
+    return;
+  }
+
+  const rate = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
+
+  fillElement.style.width = `${rate}%`;
 }
 
 function createProgressGauge() {

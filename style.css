@@ -68,6 +68,78 @@ button {
   transition: width 0.15s ease;
 }
 
+.status-area {
+  margin: 0;
+}
+
+.enemy-status-area {
+  margin: 0 0 10px;
+}
+
+.player-status-area {
+  margin: 8px 0 10px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.status-gauge {
+  position: relative;
+  min-height: 10px;
+  width: 122px;
+  border: 1px solid #f2f2f2;
+  background: #050505;
+  overflow: hidden;
+}
+
+.exp-gauge {
+  width: 250px;
+  margin: 2px auto 0;
+}
+
+.status-track {
+  position: absolute;
+  inset: 0;
+}
+
+.status-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.15s ease;
+}
+
+.status-label {
+  display: none;
+}
+
+.hp-gauge .status-fill {
+  background: #9f2f2f;
+}
+
+.mp-gauge .status-fill {
+  background: #3f8f4f;
+}
+
+.exp-gauge {
+  margin-top: 2px;
+}
+
+.exp-gauge .status-fill {
+  background: #b6a13a;
+}
+
+.enemy-status-area {
+  margin: 0 0 10px;
+}
+
+.player-status-area {
+  margin: 8px 0 10px;
+}
+
 .theme-row {
   min-height: 28px;
   margin-bottom: 18px;
