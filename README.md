@@ -4,10 +4,10 @@ All assets used in this project are either original creations by the author or s
 
 こちらは、レトロな雰囲気のRPGゲームです。
 
-タイトル：物体迷宮
-ジャンル：ハクスラ系レトロダンジョンRPG
-推奨環境：Android　Chrome
-進捗：制作中
+タイトル：物体迷宮<br>
+ジャンル：ハクスラ系レトロダンジョンRPG<br>
+推奨環境：Android　Chrome<br>
+進捗：制作中<br>
 
 古き良きWizardryの最初期をモチーフに、レトロなデザイン、サクサクとした操作感、シンプルだけど癖になるゲームを目指しています。
 
